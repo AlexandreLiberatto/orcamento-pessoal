@@ -65,7 +65,53 @@ class Bd {
     }
 
     pesquisar(despesa) {
+
+        let despesasFiltradas = Array()
+
+        despesasFiltradas = this.recuperarTodosRegistros()
+
+        
         console.log(despesa)
+
+        console.log(despesasFiltradas)
+
+        //ano
+        if(despesa.ano != '') {
+            console.log('filtro de ano')
+            despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano)
+        }
+
+        //mes
+        if(despesa.mes != '') {
+            console.log('filtro de mes')
+            despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes)
+        }
+
+        //dia
+        if(despesa.dia != '') {
+            console.log('filtro de dia')
+            despesasFiltradas = despesasFiltradas.filter(d => d.dia == despesa.dia)
+        }
+
+        //tipo
+        if(despesa.tipo != '') {
+            console.log('filtro de tipo')
+            despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
+        }
+
+        //descricao
+        if(despesa.descricao != '') {
+            console.log('filtro de descricao')
+            despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
+        }
+
+        //valor
+        if(despesa.valor != '') {
+            console.log('filtro de valor')
+            despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
+        }
+
+        return despesasFiltradas
     }
 
 }
@@ -124,14 +170,15 @@ function cadastrarDespesas() {
     
 }
 
-function carregaListaDespesas() {
+function carregaListaDespesas(despesas = Array(), filtro = false) {
 
-    let despesas = Array()
-
-    despesas = bd.recuperarTodosRegistros()
+    if(despesas.length == 0 && filtro == false) {
+      despesas = bd.recuperarTodosRegistros()
+    }
 
     //selecionando o elemento tbody da tabela
     let listaDespesas = document.getElementById('listaDespesas')
+    listaDespesas.innerHTML = ''
 
     //percorrendo o array de despesas e listando de forma dinâmica
     despesas.forEach(function(d) {
@@ -172,8 +219,8 @@ function pesquisarDespesa() {
 
     let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
 
-    bd.pesquisar(despesa)
+    let despesas = bd.pesquisar(despesa)
+
+   carregaListaDespesas(despesas, true)
 }
-
-
 
